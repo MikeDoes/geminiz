@@ -16,6 +16,16 @@ import { useTips } from '../hooks/useTips.js';
 import { theme } from '../semantic-colors.js';
 import { ThemedGradient } from './ThemedGradient.js';
 import { CliSpinner } from './CliSpinner.js';
+import {
+  shortAsciiLogo,
+  longAsciiLogo,
+  tinyAsciiLogo,
+  shortAsciiLogoBaseWidth,
+  longAsciiLogoBaseWidth,
+  tinyAsciiLogoBaseWidth,
+} from './AsciiArt.js';
+import { getAsciiArtWidth } from '../utils/textUtils.js';
+import { useSnowfall } from '../hooks/useSnowfall.js';
 
 import { isAppleTerminal } from '@google/gemini-cli-core';
 
@@ -55,6 +65,23 @@ export const AppHeader = ({ version, showDetails = true }: AppHeaderProps) => {
 
   const ICON = isAppleTerminal() ? MAC_TERMINAL_ICON : DEFAULT_ICON;
 
+  const widthOfLongLogo = getAsciiArtWidth(longAsciiLogo);
+  const widthOfShortLogo = getAsciiArtWidth(shortAsciiLogo);
+  let displayLogo;
+  let logoBaseWidth: number;
+  if (terminalWidth >= widthOfLongLogo) {
+    displayLogo = longAsciiLogo;
+    logoBaseWidth = longAsciiLogoBaseWidth;
+  } else if (terminalWidth >= widthOfShortLogo) {
+    displayLogo = shortAsciiLogo;
+    logoBaseWidth = shortAsciiLogoBaseWidth;
+  } else {
+    displayLogo = tinyAsciiLogo;
+    logoBaseWidth = tinyAsciiLogoBaseWidth;
+  }
+  const logoWidth = getAsciiArtWidth(displayLogo);
+  const animatedLogo = useSnowfall(displayLogo);
+
   if (!showDetails) {
     return (
       <Box flexDirection="column">
@@ -71,7 +98,7 @@ export const AppHeader = ({ version, showDetails = true }: AppHeaderProps) => {
             <Box marginLeft={2} flexDirection="column">
               <Box>
                 <Text bold color={theme.text.primary}>
-                  Gemini CLI
+                  GeminiZ
                 </Text>
                 <Text color={theme.text.secondary}> v{version}</Text>
               </Box>
@@ -85,15 +112,36 @@ export const AppHeader = ({ version, showDetails = true }: AppHeaderProps) => {
   return (
     <Box flexDirection="column">
       {showHeader && (
-        <Box flexDirection="row" marginTop={1} marginBottom={1} paddingLeft={2}>
+        <Box
+          marginTop={1}
+          alignItems="flex-start"
+          width={logoWidth}
+          flexShrink={0}
+          flexDirection="column"
+        >
+          {animatedLogo
+            .split('\n')
+            .filter(Boolean)
+            .map((line, i) => (
+              <Box key={i} flexDirection="row">
+                <ThemedGradient>{line.slice(0, logoBaseWidth)}</ThemedGradient>
+                {line.length > logoBaseWidth && (
+                  <Text color="#00e676">{line.slice(logoBaseWidth)}</Text>
+                )}
+              </Box>
+            ))}
+        </Box>
+      )}
+      {showHeader && (
+        <Box flexDirection="row" marginBottom={1} paddingLeft={2}>
           <Box flexShrink={0}>
             <ThemedGradient>{ICON}</ThemedGradient>
           </Box>
           <Box marginLeft={2} flexDirection="column">
-            {/* Line 1: Gemini CLI vVersion [Updating] */}
+            {/* Line 1: GeminiZ vVersion [Updating] */}
             <Box>
               <Text bold color={theme.text.primary}>
-                Gemini CLI
+                GeminiZ
               </Text>
               <Text color={theme.text.secondary}> v{version}</Text>
               {updateInfo && (
