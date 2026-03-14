@@ -66,6 +66,23 @@ replit-deploy   | REPLIT_API_KEY | OPENAI_API_KEY, HF_TOKEN, GCP_API_KEY
 Booking code? ✅ Fine. Passport number? 🚫 Blocked. Birth certificate? 🚫
 Something's fishy.
 
+## 📁 What We Added (vs Gemini CLI)
+
+| File                                        | What it does                                                                               |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `PIMS.md`                                   | Declarative privacy policy — defines PII fields, sensitivity levels, per-tool access rules |
+| `geminiz_core/pims_parser.py`               | Parses PIMS.md into structured rules for policy enforcement                                |
+| `geminiz_core/audit_logger.py`              | Logs every PII access attempt with tool, field, action, and reason                         |
+| `geminiz_core/audit_viewer.py`              | Colored audit trail viewer (`python3 -m geminiz_core.audit_viewer`)                        |
+| `geminiz_core/pims_auditor.py`              | Live tqdm-style monitoring panel (`python3 -m geminiz_core.pims_auditor`)                  |
+| `examples/booking_flight/demo.py`           | Use case 1: flight check-in with PII governance (9 allowed, 4 blocked)                     |
+| `examples/booking_flight/flight_ticket.txt` | Sample flight ticket with mixed PII for demo                                               |
+| `examples/api_keys/demo.py`                 | Use case 2: malicious unregistered tool — all PII blocked                                  |
+| `examples/api_keys/customer_complaint.txt`  | Sample customer complaint with API keys, passport, bank account                            |
+| `.gemini/skills/pii-awareness/SKILL.md`     | Gemini CLI skill — auto-activates PII governance in chat                                   |
+| `UPGRADES.md`                               | Full comparison table of GeminiZ vs vanilla Gemini CLI                                     |
+| `docs/assets/architecture.md`               | ASCII architecture diagram of the full data flow                                           |
+
 ## 🔧 Built On Open Source
 
 - **[AI4Privacy](https://huggingface.co/ai4privacy)** — Multilingual PII
