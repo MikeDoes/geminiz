@@ -1,7 +1,7 @@
 """
 Gemini Z — Audit Trail Viewer
 Run: python -m geminiz_core.audit_viewer
-Shows all PII access attempts with colored output.
+Shows all PII access attempts with colored output and emojis.
 """
 
 import os
@@ -26,12 +26,12 @@ def display_audit(audit_path=None):
     entries = read_audit_log(audit_path)
 
     if not entries:
-        print(f"\n{YELLOW}No audit entries found.{RESET}")
-        print(f"{DIM}Run a demo first to generate audit data.{RESET}\n")
+        print(f"\n{YELLOW}⚠️  No audit entries found.{RESET}")
+        print(f"{DIM}💡 Run a demo first to generate audit data.{RESET}\n")
         return
 
     print(f"\n{BOLD}{GREEN}{'='*90}{RESET}")
-    print(f"{BOLD}{GREEN}  [GEMINI Z] Audit Trail{RESET}")
+    print(f"{BOLD}{GREEN}  🛡️  [GEMINI Z] Audit Trail  📋{RESET}")
     print(f"{BOLD}{GREEN}{'='*90}{RESET}\n")
 
     # Stats
@@ -39,30 +39,35 @@ def display_audit(audit_path=None):
     allowed = sum(1 for e in entries if e['action'] == 'ALLOWED')
     blocked = sum(1 for e in entries if e['action'] == 'BLOCKED')
 
-    print(f"  {BOLD}Total accesses:{RESET} {total}    "
-          f"{GREEN}Allowed:{RESET} {allowed}    "
-          f"{RED}Blocked:{RESET} {blocked}\n")
+    print(f"  📊 {BOLD}Total:{RESET} {total}    "
+          f"✅ {GREEN}Allowed:{RESET} {allowed}    "
+          f"🚫 {RED}Blocked:{RESET} {blocked}")
 
-    print(f"  {BOLD}{'Timestamp':<24} {'Tool':<22} {'Field':<25} {'Decision':<12} {'Reason'}{RESET}")
-    print(f"  {'—'*100}")
+    if blocked > 0:
+        pct = round(blocked / total * 100)
+        print(f"  🔒 {BOLD}Threat prevention rate: {RED}{pct}%{RESET} of accesses blocked")
+    print()
+
+    print(f"  {BOLD}{'⏰ Timestamp':<26} {'🔧 Tool':<22} {'📋 Field':<27} {'Decision':<12} {'Reason'}{RESET}")
+    print(f"  {'─'*100}")
 
     for entry in entries:
         action = entry['action']
         reason = entry.get('reason', '')
         if action == 'ALLOWED':
             color = GREEN
-            icon = '✓'
+            icon = '✅'
         elif action == 'BLOCKED':
             color = RED
-            icon = '✗'
+            icon = '🚫'
         else:
             color = YELLOW
-            icon = '?'
+            icon = '❓'
 
         print(f"  {color}{icon} {entry['timestamp']:<22} {entry['tool']:<22} {entry['field']:<25} {BOLD}{action:<12}{RESET} {DIM}{reason}{RESET}")
 
-    print(f"\n  {'—'*100}")
-    print(f"  {DIM}Log file: {audit_path}{RESET}\n")
+    print(f"\n  {'─'*100}")
+    print(f"  {DIM}📁 Log file: {audit_path}{RESET}\n")
 
 
 if __name__ == '__main__':
