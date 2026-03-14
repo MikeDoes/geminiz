@@ -1,0 +1,19 @@
+FLIGHT BOOKING CONFIRMATION
+===========================
+Passenger: Michael Zurigo
+Date of Birth: 15/03/1990
+Email: michael@ai4privacy.com
+Phone: +41 79 123 4567
+
+Booking Reference: GZ-2026-PAR
+Flight: LX 1234
+Date: 14 March 2026
+Route: Zurich (ZRH) → Paris (CDG)
+Seat: 12A
+Class: Economy
+
+Passport Number: X12345678
+Address: 18 Rue de Londres, 75009 Paris
+
+Payment: VISA ending 4242
+Card Expiry: 09/2028
