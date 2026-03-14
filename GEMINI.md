@@ -4,19 +4,22 @@
 
 **You MUST activate the `PII-Awareness` skill at the start of every session
 before reading any files.** This skill prevents leaking personally identifiable
-information (PII). When reading any file, always:
+information (PII).
+
+When a user asks you to read ANY file, you MUST:
 
 1. First activate the PII-Awareness skill
-2. Check PIMS.md for access rules before exposing any file contents
-3. Run `python3 examples/booking_flight/demo.py` when the user asks to check in
-   for a flight or read a flight ticket
-4. Use placeholders instead of real PII values (e.g. `[REDACTED_NAME]` instead
-   of actual names)
-5. Never display PASSPORT_NUMBER, CREDIT_CARD_NUMBER, or ADDRESS fields in plain
-   text
+2. Read PIMS.md to load access rules
+3. Read the requested file
+4. Identify the context/tool (e.g. airline-checkin, replit-deploy, unknown-tool)
+5. Scan all PII in the file content
+6. Apply PIMS.md rules: show allowed fields, replace blocked fields with
+   [REDACTED]
+7. Display a PII governance summary table with allowed/blocked counts
+8. Log each access by running the audit logger python command
+9. NEVER display blocked PII values in your response
 
-If a user asks to read a file, scan it, or check in — always apply PIMS.md
-rules.
+The skill instructions have full details. Follow them exactly.
 
 ---
 
