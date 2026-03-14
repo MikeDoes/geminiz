@@ -1,0 +1,22 @@
+CUSTOMER SUPPORT TICKET #4821
+==============================
+Customer: Sarah Martinez
+Email: sarah.martinez@gmail.com
+Phone: +33 6 12 34 56 78
+Address: 42 Avenue des Champs-Elysees, 75008 Paris
+
+Issue: API billing overcharge
+Account ID: ACC-2026-8834
+Credit Card on file: VISA ending 9182
+
+Description:
+Hi, my name is Sarah Martinez and I was charged 340 EUR on my OpenAI account
+linked to my API key sk-proj-abc123def456. I also noticed unauthorized usage
+on my HuggingFace token hf_xYz789AbCdEf and my Replit key repl_key_99281.
+My passport number is F87654321 and my tax ID is FR-TAX-2026-1234.
+Please investigate and refund the overcharge to my bank account
+FR76 3000 1000 7000 0000 0000 123.
+
+Thank you,
+Sarah Martinez
+Born: 22/07/1988
