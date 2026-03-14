@@ -1,20 +1,84 @@
 # GeminiZ
 
-[![Gemini CLI CI](https://github.com/google-gemini/gemini-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/google-gemini/gemini-cli/actions/workflows/ci.yml)
-[![Gemini CLI E2E (Chained)](https://github.com/google-gemini/gemini-cli/actions/workflows/chained_e2e.yml/badge.svg)](https://github.com/google-gemini/gemini-cli/actions/workflows/chained_e2e.yml)
-[![Version](https://img.shields.io/npm/v/@google/gemini-cli)](https://www.npmjs.com/package/@google/gemini-cli)
-[![License](https://img.shields.io/github/license/google-gemini/gemini-cli)](https://github.com/google-gemini/gemini-cli/blob/main/LICENSE)
-[![View Code Wiki](https://assets.codewiki.google/readme-badge/static.svg)](https://codewiki.google/github.com/google-gemini/gemini-cli?utm_source=badge&utm_medium=github&utm_campaign=github.com/google-gemini/gemini-cli)
+![GeminiZ Logo](/docs/assets/GeminiZ.png)
 
-![Gemini CLI Screenshot](/docs/assets/gemini-screenshot.png)
+> **🛡️ Your personal data, your rules, auditable by default.**
 
-Gemini CLI is an open-source AI agent that brings the power of Gemini directly
-into your terminal. It provides lightweight access to Gemini, giving you the
-most direct path from your prompt to our model.
+GeminiZ is a fork of [Gemini CLI](https://github.com/google-gemini/gemini-cli)
+that adds a **privacy governance layer** for AI agents. It uses a declarative
+file called `PIMS.md` — think `.gitignore` but for your personal data — to
+control what PII each tool can access, with full audit trails.
 
-Learn all about Gemini CLI in our [documentation](https://geminicli.com/docs/).
+![GeminiZ in action](/docs/assets/Global%20Screenshot.png)
 
-## 🚀 Why Gemini CLI?
+## 🔒 The Problem
+
+Everyone is using AI CLI tools — Claude Code, Gemini CLI, Cursor — sending
+personal data to every tool, every skill, every MCP server. Most of these are
+unverified. **40,000 exposed OpenClaw instances, 400 malicious plugins, 10,000
+compromised developers** from supply chain attacks. Your PII is one bad skill
+away from being exfiltrated.
+
+Nobody has built the privacy layer for AI agents. **Until now.**
+
+## 🛡️ How GeminiZ Works
+
+1. **📋 PIMS.md** — A declarative policy file that defines what personal data
+   exists, sensitivity levels, and which tools can access what
+2. **🤖 Local PII Detection** — Uses open-source models like
+   [AI4Privacy](https://huggingface.co/ai4privacy/llama-ai4privacy-multilingual-categorical-anonymiser-openpii)
+   or Gemma, running locally — your data never leaves your machine
+3. **✅🚫 Access Control** — Tools must declare what PII they need. No
+   declaration, no data
+4. **📝 Audit Trail** — Every access is logged. Not just to protect you — but to
+   prove it to your clients, your team, your regulators
+
+## 🚀 Quick Start
+
+```bash
+# Run the flight check-in demo
+python3 examples/booking_flight/demo.py
+
+# View the audit trail
+python3 -m geminiz_core.audit_viewer
+
+# Run the live PIMS auditor (side panel)
+python3 -m geminiz_core.pims_auditor
+```
+
+### In Gemini CLI
+
+```bash
+npm run start
+> Read my flight ticket at examples/booking_flight/flight_ticket.txt and check in for me
+```
+
+The **PII-Awareness** skill auto-activates, scans the file for personal data,
+enforces PIMS.md rules, and logs everything.
+
+## 📋 PIMS.md Example
+
+```
+airline-checkin | BOOKING_CODE, FLIGHT_NUMBER, SEAT_NUMBER, NAME, EMAIL | PASSPORT_NUMBER, CREDIT_CARD_NUMBER, ADDRESS
+replit-deploy   | REPLIT_API_KEY | OPENAI_API_KEY, HF_TOKEN, GCP_API_KEY
+```
+
+Booking code? ✅ Fine. Passport number? 🚫 Blocked. Birth certificate? 🚫
+Something's fishy.
+
+## 🔧 Built On Open Source
+
+- **[AI4Privacy](https://huggingface.co/ai4privacy)** — Multilingual PII
+  detection model
+- **[Gemini CLI](https://github.com/google-gemini/gemini-cli)** — Google's
+  open-source CLI agent
+- **[HuggingFace](https://huggingface.co)** — Model hosting and inference
+
+---
+
+## 📦 Original Gemini CLI Features
+
+GeminiZ includes all original Gemini CLI features plus the privacy layer:
 
 - **🎯 Free tier**: 60 requests/min and 1,000 requests/day with personal Google
   account.
