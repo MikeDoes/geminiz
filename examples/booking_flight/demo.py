@@ -22,23 +22,20 @@ DIM = '\033[2m'
 RESET = '\033[0m'
 CYAN = '\033[96m'
 WHITE = '\033[97m'
-BG_RED = '\033[41m'
-BG_GREEN = '\033[42m'
-BG_YELLOW = '\033[43m'
 
 
 def feedback(msg, level='info'):
     """Print Gemini Z feedback messages inline."""
     if level == 'activate':
-        print(f"\n  {BOLD}{GREEN}[GEMINI Z]{RESET} {DIM}PIMS.md loaded — privacy governance active{RESET}")
+        print(f"\n  {BOLD}{GREEN}🛡️  [GEMINI Z]{RESET} {DIM}PIMS.md loaded — privacy governance active{RESET}")
     elif level == 'scan':
-        print(f"  {BOLD}{GREEN}[GEMINI Z]{RESET} {DIM}{msg}{RESET}")
+        print(f"  {BOLD}{GREEN}🔍 [GEMINI Z]{RESET} {DIM}{msg}{RESET}")
     elif level == 'warn':
-        print(f"  {BOLD}{YELLOW}[GEMINI Z]{RESET} {BOLD}{YELLOW}{msg}{RESET}")
+        print(f"  {BOLD}{YELLOW}⚠️  [GEMINI Z]{RESET} {BOLD}{YELLOW}{msg}{RESET}")
     elif level == 'block':
-        print(f"  {BOLD}{RED}[GEMINI Z]{RESET} {BOLD}{RED}{msg}{RESET}")
+        print(f"  {BOLD}{RED}🚫 [GEMINI Z]{RESET} {BOLD}{RED}{msg}{RESET}")
     elif level == 'allow':
-        print(f"  {BOLD}{GREEN}[GEMINI Z] {GREEN}{RESET}{RESET} {DIM}{msg}{RESET}")
+        print(f"  {BOLD}{GREEN}✅ [GEMINI Z]{RESET} {DIM}{msg}{RESET}")
 
 
 def detect_pii_in_text(text):
@@ -85,9 +82,9 @@ def detect_pii_fallback(text):
 
 
 def run_demo():
-    print(f"\n{BOLD}{CYAN}{'='*60}{RESET}")
-    print(f"{BOLD}{CYAN}  GEMINI Z — Flight Check-in Demo{RESET}")
-    print(f"{BOLD}{CYAN}{'='*60}{RESET}")
+    print(f"\n{BOLD}{GREEN}{'='*60}{RESET}")
+    print(f"{BOLD}{GREEN}  🛡️  GEMINI Z — Flight Check-in Demo  ✈️{RESET}")
+    print(f"{BOLD}{GREEN}{'='*60}{RESET}")
 
     # PIMS activation feedback
     feedback('', 'activate')
@@ -97,8 +94,8 @@ def run_demo():
     with open(ticket_path, 'r') as f:
         ticket_text = f.read()
 
-    feedback('Scanning file: flight_ticket.txt for PII...', 'scan')
-    feedback('Anonymiser engine: ai4privacy (local, open-source)', 'scan')
+    feedback('📄 Scanning file: flight_ticket.txt for PII...', 'scan')
+    feedback('🤖 Anonymiser engine: ai4privacy (local, open-source)', 'scan')
     print()
 
     # Load PIMS rules
@@ -110,10 +107,10 @@ def run_demo():
     allowed_fields = tool_rules.get('allowed', [])
     blocked_fields = tool_rules.get('blocked', [])
 
-    print(f"  {BOLD}Tool requesting access: {CYAN}{tool_name}{RESET}")
-    print(f"  {BOLD}PIMS.md Policy:{RESET}")
-    print(f"    {GREEN}✓ Allowed:{RESET} {', '.join(allowed_fields)}")
-    print(f"    {RED}✗ Blocked:{RESET} {', '.join(blocked_fields)}")
+    print(f"  🔧 {BOLD}Tool requesting access: {CYAN}{tool_name}{RESET}")
+    print(f"  📋 {BOLD}PIMS.md Policy:{RESET}")
+    print(f"    ✅ {GREEN}Allowed:{RESET} {', '.join(allowed_fields)}")
+    print(f"    🚫 {RED}Blocked:{RESET} {', '.join(blocked_fields)}")
     print()
 
     # Detect PII
@@ -154,8 +151,8 @@ def run_demo():
         'SEAT_NUMBER': 'SEAT_NUMBER',
     }
 
-    print(f"  {BOLD}{'PII Detected':<25} {'Value':<25} {'Decision':<15}{RESET}")
-    print(f"  {'—'*65}")
+    print(f"  {BOLD}{'📋 PII Detected':<28} {'Value':<25} {'Decision':<15}{RESET}")
+    print(f"  {'─'*65}")
 
     allowed_count = 0
     blocked_count = 0
@@ -170,32 +167,32 @@ def run_demo():
 
         if action == 'ALLOWED':
             color = GREEN
-            icon = '✓'
+            icon = '✅'
             display_value = value
             allowed_count += 1
         else:
             color = RED
-            icon = '✗'
+            icon = '🚫'
             display_value = f"{'*' * len(value)}"
             blocked_count += 1
 
         # Clean and truncate values for display
         display_val = display_value.replace('\n', ' ').strip()[:22]
-        print(f"  {color}  {icon} {pims_field:<23} {display_val:<25} {BOLD}{action}{RESET}")
+        print(f"  {color} {icon} {pims_field:<23} {display_val:<25} {BOLD}{action}{RESET}")
 
         # Log to audit
         audit_logger.log_access(audit_path, tool_name, pims_field, value, action)
 
-    print(f"  {'—'*65}")
+    print(f"  {'─'*65}")
 
     # Summary feedback
     print()
     if blocked_count > 0:
-        feedback(f'Blocked {blocked_count} PII field(s) — potential data exfiltration prevented', 'block')
+        feedback(f'Blocked {blocked_count} PII field(s) — potential data exfiltration prevented 🔒', 'block')
     if allowed_count > 0:
         feedback(f'Allowed {allowed_count} field(s) per PIMS.md policy', 'allow')
 
-    feedback(f'Audit log updated: .gemini-z/audit.log ({allowed_count + blocked_count} entries)', 'scan')
+    feedback(f'📝 Audit log updated: .gemini-z/audit.log ({allowed_count + blocked_count} entries)', 'scan')
     print()
 
 
