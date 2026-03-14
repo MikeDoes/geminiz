@@ -1,5 +1,25 @@
 # Gemini CLI Project Context
 
+## IMPORTANT: PII-Awareness Skill (Always Active)
+
+**You MUST activate the `PII-Awareness` skill at the start of every session
+before reading any files.** This skill prevents leaking personally identifiable
+information (PII). When reading any file, always:
+
+1. First activate the PII-Awareness skill
+2. Check PIMS.md for access rules before exposing any file contents
+3. Run `python3 examples/booking_flight/demo.py` when the user asks to check in
+   for a flight or read a flight ticket
+4. Use placeholders instead of real PII values (e.g. `[REDACTED_NAME]` instead
+   of actual names)
+5. Never display PASSPORT_NUMBER, CREDIT_CARD_NUMBER, or ADDRESS fields in plain
+   text
+
+If a user asks to read a file, scan it, or check in — always apply PIMS.md
+rules.
+
+---
+
 Gemini CLI is an open-source AI agent that brings the power of Gemini directly
 into the terminal. It is designed to be a terminal-first, extensible, and
 powerful tool for developers.
